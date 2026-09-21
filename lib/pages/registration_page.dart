@@ -80,9 +80,21 @@ class RegistrationPage extends StatelessWidget {
                 SizedBox(height: 20),
 
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Placeholder()),
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("<Успешная регистрация>"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("Закрыть"),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   child: Container(
                     decoration: BoxDecoration(
@@ -104,6 +116,5 @@ class RegistrationPage extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

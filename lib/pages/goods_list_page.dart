@@ -8,15 +8,15 @@ class GoodsList extends StatelessWidget {
 
   final List<Goods> goods = [
     Goods(
-      name: "name",
-      description: "description",
-      imagePath: "lib/images/photo_2026-04-14_21-58-29.jpg",
+      name: "Товар 1",
+      description: "Описание товара... Описание товара... Описание товара... Описание товара... Описание товара... ",
+      imagePath: "lib/images/placeholder.png",
       status: GoodsStatus.free,
     ),
     Goods(
-      name: "name2",
-      description: "description2",
-      imagePath: "lib/images/photo_2026-04-14_21-58-29.jpg",
+      name: "Товар 2",
+      description: "Описание товара 2... Описание товара 2... Описание товара 2... Описание товара 2... Описание товара 2... ",
+      imagePath: "lib/images/placeholder.png",
       status: GoodsStatus.taken,
     ),
   ];
