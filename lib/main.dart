@@ -10,7 +10,28 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(
+        filledButtonTheme: FilledButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.grey[900],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusGeometry.all(Radius.circular(15)),
+            ),
+            padding: EdgeInsets.all(15),
+          ),
+        ),
+
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            textStyle: TextStyle(fontWeight: FontWeight.w600),
+            foregroundColor: Colors.blue[500],
+            padding: EdgeInsets.zero,
+            minimumSize: Size.zero,
+          ),
+        ),
+      ),
+
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
     );

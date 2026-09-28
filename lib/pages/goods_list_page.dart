@@ -6,21 +6,6 @@ import 'package:sandbox_app1/pages/goods_page.dart';
 class GoodsList extends StatelessWidget {
   new({super.key});
 
-  final List<Goods> goods = [
-    Goods(
-      name: "Товар 1",
-      description: "Описание товара... Описание товара... Описание товара... Описание товара... Описание товара... ",
-      imagePath: "lib/images/placeholder.png",
-      status: GoodsStatus.free,
-    ),
-    Goods(
-      name: "Товар 2",
-      description: "Описание товара 2... Описание товара 2... Описание товара 2... Описание товара 2... Описание товара 2... ",
-      imagePath: "lib/images/placeholder.png",
-      status: GoodsStatus.taken,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,14 +24,15 @@ class GoodsList extends StatelessWidget {
 
             Expanded(
               child: ListView.separated(
-                itemCount: goods.length,
+                itemCount: tempGoodsList.length,
                 itemBuilder: (context, index) {
                   return GoodsTile(
-                    goods: goods[index],
+                    goods: tempGoodsList[index],
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GoodsPage(goods: goods[index]),
+                        builder: (context) =>
+                            GoodsPage(goods: tempGoodsList[index]),
                       ),
                     ),
                   );
