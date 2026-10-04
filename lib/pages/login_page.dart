@@ -14,13 +14,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
-  String? _login;
-  String? _password;
-  String? _globalError;
+  String _login = "";
+  String _password = "";
+  String _globalError = "";
 
   void _submitForm() {
     setState(() {
-      _globalError = null;
+      _globalError = "";
     });
 
     if (_formKey.currentState!.validate()) {
@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       return null;
                     },
-                    onSaved: (newValue) => _login = newValue,
+                    onSaved: (newValue) => _login = newValue!,
                     decoration: InputDecoration(
                       hint: Text("Логин"),
                       border: OutlineInputBorder(
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       return null;
                     },
-                    onSaved: (newValue) => _password = newValue,
+                    onSaved: (newValue) => _password = newValue!,
                     obscureText: true,
                     enableSuggestions: false,
                     autocorrect: false,
@@ -92,8 +92,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  if (_globalError != null)
-                    Text(_globalError!, style: TextStyle(color: Colors.red)),
+                  if (_globalError != "")
+                    Text(_globalError, style: TextStyle(color: Colors.red)),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

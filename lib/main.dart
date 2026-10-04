@@ -30,6 +30,11 @@ class MainApp extends StatelessWidget {
             minimumSize: Size.zero,
           ),
         ),
+
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.grey[900],
+          foregroundColor: Colors.white,
+        ),
       ),
 
       debugShowCheckedModeBanner: false,

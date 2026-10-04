@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sandbox_app1/models/user.dart';
 
 class RegistrationPage extends StatefulWidget {
-  new({super.key});
+  const new({super.key});
 
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();
@@ -17,7 +17,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String _passwordConfirmation = "";
   String? _globalError;
 
-  void showAlertDialog() {
+  void _showAlertDialog() {
     AlertDialog alert = AlertDialog(
       title: Text("Вы успешно зарегестрировались!"),
       actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +56,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
       _formKey.currentState!.reset();
 
-      showAlertDialog();
+      _showAlertDialog();
     }
   }
 

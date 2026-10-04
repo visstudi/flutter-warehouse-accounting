@@ -3,9 +3,9 @@ import 'package:sandbox_app1/models/user.dart';
 import 'package:sandbox_app1/pages/login_page.dart';
 
 class AccountPage extends StatelessWidget {
-  User _user;
+  final User _user;
 
-  new({required this._user, super.key});
+  const new({required this._user, super.key});
 
   @override
   Widget build(BuildContext context) {
