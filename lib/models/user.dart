@@ -10,5 +10,5 @@ class User {
 }
 
 List<User> tempUsersList = [
-  User(name: "user1", login: "login", password: "password"),
+  User(name: "user1", login: "login@example.com", password: "password"),
 ];

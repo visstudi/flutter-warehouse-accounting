@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sandbox_app1/models/goods.dart';
 import 'package:sandbox_app1/pages/login_page.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => GoodsListModel(),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -34,6 +41,7 @@ class MainApp extends StatelessWidget {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.grey[900],
           foregroundColor: Colors.white,
+          shape: CircleBorder(),
         ),
       ),
 

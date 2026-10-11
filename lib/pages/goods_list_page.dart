@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sandbox_app1/components/goods_tile.dart';
 import 'package:sandbox_app1/models/goods.dart';
 import 'package:sandbox_app1/pages/add_goods_page.dart';
@@ -29,22 +30,27 @@ class _GoodsListState extends State<GoodsList> {
             ),
 
             Expanded(
-              child: ListView.separated(
-                physics: BouncingScrollPhysics(),
-                itemCount: tempGoodsList.length,
-                itemBuilder: (context, index) {
-                  return GoodsTile(
-                    goods: tempGoodsList[index],
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            GoodsPage(goods: tempGoodsList[index]),
-                      ),
-                    ),
+              child: Consumer<GoodsListModel>(
+                builder: (context, goodsList, child) {
+                  return ListView.separated(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: goodsList.length,
+                    itemBuilder: (context, index) {
+                      return GoodsTile(
+                        goods: goodsList.tempGoodsList[index],
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GoodsPage(
+                              goods: goodsList.tempGoodsList[index],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) => SizedBox(height: 10),
                   );
                 },
-                separatorBuilder: (context, index) => SizedBox(height: 10),
               ),
             ),
           ],

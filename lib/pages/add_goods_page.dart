@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sandbox_app1/components/qr_dialog.dart';
 import 'package:sandbox_app1/models/goods.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:sandbox_app1/pages/qr_scanner_page.dart';
 
 class AddGoodsPage extends StatefulWidget {
   const new({super.key});
@@ -15,32 +17,10 @@ class _AddGoodsPageState extends State<AddGoodsPage> {
   String _goodsName = "";
   String _goodsDescription = "";
 
-  void _showQRDialog(String name, String description) {
-    AlertDialog qr = AlertDialog(
-      backgroundColor: Colors.grey[200],
-      content: SizedBox(
-        width: 300,
-        child: QrImageView(
-          data: "$name;$description",
-          version: QrVersions.auto,
-          backgroundColor: Colors.grey[200] ?? Colors.grey,
-        ),
-      ),
-      actionsAlignment: MainAxisAlignment.spaceBetween,
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text("Закрыть"),
-        ),
-      ],
-    );
-
-    showDialog(context: context, builder: (context) => qr);
-  }
-
   bool _saveForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      _formKey.currentState!.reset();
       return true;
     }
     return false;
@@ -48,7 +28,7 @@ class _AddGoodsPageState extends State<AddGoodsPage> {
 
   void _submitForm() {
     if (_saveForm()) {
-      tempGoodsList.add(
+      Provider.of<GoodsListModel>(context, listen: false).add(
         Goods(
           name: _goodsName,
           description: _goodsDescription,
@@ -56,6 +36,30 @@ class _AddGoodsPageState extends State<AddGoodsPage> {
         ),
       );
     }
+  }
+
+  Future<void> _scanGoodsQr() async {
+    final (goodsName, goodsDesc) = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QrScannerPage()),
+    );
+
+    if (!context.mounted) return;
+
+    setState(() {
+      _goodsName = goodsName;
+      _goodsDescription = goodsDesc;
+    });
+
+    Provider.of<GoodsListModel>(context, listen: false).add(
+      Goods(
+        name: _goodsName,
+        description: _goodsDescription,
+        imagePath: "lib/images/placeholder.png",
+      ),
+    );
+
+    Navigator.pop(context);
   }
 
   @override
@@ -69,9 +73,18 @@ class _AddGoodsPageState extends State<AddGoodsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Добавление товара",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Добавление товара",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                  ),
+                  IconButton(
+                    onPressed: _scanGoodsQr,
+                    icon: Icon(Icons.qr_code_scanner),
+                  ),
+                ],
               ),
 
               Expanded(
@@ -157,7 +170,11 @@ class _AddGoodsPageState extends State<AddGoodsPage> {
                   FilledButton(
                     onPressed: () {
                       if (_saveForm()) {
-                        _showQRDialog(_goodsName, _goodsDescription);
+                        QRDialog.showQRDialog(
+                          context,
+                          _goodsName,
+                          _goodsDescription,
+                        );
                       }
                     },
                     child: Icon(Icons.qr_code),

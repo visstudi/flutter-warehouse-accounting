@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sandbox_app1/components/qr_dialog.dart';
 import 'package:sandbox_app1/models/goods.dart';
 
 class GoodsPage extends StatelessWidget {
@@ -14,17 +15,29 @@ class GoodsPage extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 20,
           children: [
             SafeArea(
-              child: Text(
-                _goods.name,
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _goods.name,
+                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+                  ),
+                  IconButton(
+                    onPressed: () => QRDialog.showQRDialog(
+                      context,
+                      _goods.name,
+                      _goods.description,
+                    ),
+                    icon: Icon(Icons.qr_code),
+                  ),
+                ],
               ),
             ),
 
             AspectRatio(aspectRatio: 1, child: Image.asset(_goods.imagePath)),
-
-            SizedBox(height: 10),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -51,8 +64,6 @@ class GoodsPage extends StatelessWidget {
                 ),
               ],
             ),
-
-            SizedBox(height: 10),
 
             Expanded(
               child: Text(_goods.description, overflow: TextOverflow.clip),

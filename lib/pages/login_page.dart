@@ -60,11 +60,16 @@ class _LoginPageState extends State<LoginPage> {
                       if (value == null || value.isEmpty) {
                         return "Введите логин";
                       }
+                      if (!RegExp(
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                      ).hasMatch(value)) {
+                        return "Введен некорректный адрес email";
+                      }
                       return null;
                     },
                     onSaved: (newValue) => _login = newValue!,
                     decoration: InputDecoration(
-                      hint: Text("Логин"),
+                      hint: Text("Логин (email)"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
