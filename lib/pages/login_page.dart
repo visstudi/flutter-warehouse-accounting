@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   String _login = "";
   String _password = "";
   String _globalError = "";
+  bool _obscurePassword = true;
 
   void _submitForm() {
     setState(() {
@@ -67,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       return null;
                     },
+                    keyboardType: TextInputType.emailAddress,
                     onSaved: (newValue) => _login = newValue!,
                     decoration: InputDecoration(
                       hint: Text("Логин (email)"),
@@ -84,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     },
                     onSaved: (newValue) => _password = newValue!,
-                    obscureText: true,
+                    obscureText: _obscurePassword,
                     enableSuggestions: false,
                     autocorrect: false,
                     keyboardType: TextInputType.visiblePassword,
@@ -93,6 +95,18 @@ class _LoginPageState extends State<LoginPage> {
                       hint: Text("Пароль"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                       ),
                     ),
                   ),

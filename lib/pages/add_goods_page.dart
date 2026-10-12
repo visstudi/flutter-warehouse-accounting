@@ -4,6 +4,11 @@ import 'package:sandbox_app1/components/qr_dialog.dart';
 import 'package:sandbox_app1/models/goods.dart';
 import 'package:sandbox_app1/pages/qr_scanner_page.dart';
 
+List<(GoodsStatus, String)> goodsStatusOptions = [
+  (GoodsStatus.free, 'Свободен'),
+  (GoodsStatus.taken, 'Занят'),
+];
+
 class AddGoodsPage extends StatefulWidget {
   const new({super.key});
 
@@ -16,6 +21,7 @@ class _AddGoodsPageState extends State<AddGoodsPage> {
 
   String _goodsName = "";
   String _goodsDescription = "";
+  Set<GoodsStatus> _goodsStatus = {GoodsStatus.free};
 
   bool _saveForm() {
     if (_formKey.currentState!.validate()) {
@@ -33,18 +39,22 @@ class _AddGoodsPageState extends State<AddGoodsPage> {
           name: _goodsName,
           description: _goodsDescription,
           imagePath: "lib/images/placeholder.png",
+          status: _goodsStatus.first,
         ),
       );
     }
   }
 
   Future<void> _scanGoodsQr() async {
-    final (goodsName, goodsDesc) = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => QrScannerPage()),
-    );
+    final (String? goodsName, String? goodsDesc) =
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => QrScannerPage()),
+        ) ??
+        (null, null);
 
     if (!context.mounted) return;
+    if (goodsName == null || goodsDesc == null) return;
 
     setState(() {
       _goodsName = goodsName;
@@ -150,6 +160,50 @@ class _AddGoodsPageState extends State<AddGoodsPage> {
                                 ),
                                 maxLines: 10,
                                 minLines: 10,
+                              ),
+                            ],
+                          ),
+
+                          // Goods status
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 10,
+                            children: [
+                              Text(
+                                "Статус:",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SegmentedButton(
+                                style: SegmentedButton.styleFrom(
+                                  backgroundColor: Colors.grey[200],
+                                  foregroundColor: Colors.black,
+                                  selectedBackgroundColor:
+                                      (_goodsStatus.first == GoodsStatus.free)
+                                      ? Colors.green
+                                      : Colors.red,
+                                  selectedForegroundColor: Colors.white,
+                                ),
+                                showSelectedIcon: false,
+                                selected: _goodsStatus,
+                                onSelectionChanged:
+                                    (Set<GoodsStatus> newStatus) {
+                                      setState(() {
+                                        _goodsStatus = newStatus;
+                                      });
+                                    },
+                                segments: goodsStatusOptions
+                                    .map<ButtonSegment<GoodsStatus>>((
+                                      (GoodsStatus, String) status,
+                                    ) {
+                                      return ButtonSegment(
+                                        value: status.$1,
+                                        label: Text(status.$2),
+                                      );
+                                    })
+                                    .toList(),
                               ),
                             ],
                           ),

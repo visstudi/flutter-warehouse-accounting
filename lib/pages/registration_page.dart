@@ -16,6 +16,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String _password = "";
   String _passwordConfirmation = "";
   String? _globalError;
+  bool _obscurePassword = true;
 
   void _showAlertDialog() {
     AlertDialog alert = AlertDialog(
@@ -94,11 +95,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       if (value == null || value.isEmpty) {
                         return "Введите логин";
                       }
+                      if (!RegExp(
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                      ).hasMatch(value)) {
+                        return "Введен некорректный адрес email";
+                      }
                       return null;
                     },
+                    keyboardType: TextInputType.emailAddress,
                     onSaved: (newValue) => _login = newValue!,
                     decoration: InputDecoration(
-                      hint: Text("Логин"),
+                      hint: Text("Логин (email)"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -113,22 +120,46 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       return null;
                     },
                     onSaved: (newValue) => _password = newValue!,
-                    obscureText: true,
+                    obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       hint: Text("Пароль"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                       ),
                     ),
                   ),
 
                   TextFormField(
                     onSaved: (newValue) => _passwordConfirmation = newValue!,
-                    obscureText: true,
+                    obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       hint: Text("Подтверждение пароля"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                       ),
                     ),
                   ),
